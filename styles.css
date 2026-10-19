@@ -1,0 +1,156 @@
+root{
+    --side-bar-width: 0px;
+    --bottom-bar-height: 0px;
+    --top-bar-height: 0px;
+    --top-bar-width: 0px;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgb(17, 24, 39);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 40px;
+    text-align: center;
+    background-color: rgb(31, 41, 55);
+    border: 3px solid white;
+    border-radius: 15px;
+    z-index: 10;
+}
+
+.menu h1{
+    font-size: 50px;
+    margin-bottom: 40px;
+}
+
+.menu h2{
+    font-size: 35px;
+}
+
+button {
+    display: block;
+    width: 250px;
+    margin: 15px auto;
+    padding: 15px;
+    font-size: 18px;
+    background-color: rgb(79,78,101);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(99,98,121);
+}
+
+button:active {
+    background-color: rgb(59,58,81);
+}
+
+.towerButton {
+    display: block;
+    width: var(--sidebar-width);
+    margin: 15px auto;
+    padding: 15px;
+    font-size: 18px;
+    background-color: rgb(79,78,101);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.towerButton:focus {
+  background-color: green;
+  transform: translateY(2px);
+}
+
+label {
+    display: block;
+    margin: 25px;
+}
+
+canvas {
+    display: block;
+}
+
+#startRound {
+    width: 100px;
+    height: 100px;
+    fill: white;
+}
+
+#gameContainer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#player1UI {
+    position: fixed;
+    bottom: 20px;
+    left: var(--sidebar-width);
+    transform: none;
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+}
+
+#player2UI {
+    position: fixed;
+    bottom: 20px;
+    left: calc(50% + var(--sidebar-width) / 2);
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+}
+
+#leftBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background: #222;
+    z-index: 2;
+}
+
+#bottomBar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: var(--bottom-bar-height);
+    background: #222;
+    z-index: 2;
+}
+
+#topBar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: var(--sidebar-width);
+    height: var(--top-bar-height);
+    background: #222;
+    display: flex;
+    align-items: center;
+    gap: var(--top-bar-width);
+    z-index: 2;
+}

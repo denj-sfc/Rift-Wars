@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <title>Prototype</title>
+        <script src="vendor/p5.min.js" defer></script>
+        <script src="menus/menu.js" defer></script>
+        <script src="game/data.js" defer></script>
+        <script src="game/BasicEnemy.js" defer></script>
+        <script src="game/towers/basicTower.js" defer></script>
+        <script src="game/towers/tankTower.js" defer></script>
+        <script src="game/game.js" defer></script>
+        <script src="game/scripts.js" defer></script>
+        <script src="game/opponent.js" defer></script>
+    </head>
+    <body>
+        <!-- Main Menu -->
+         <div id="mainMenu" class="menu">
+            <h1>RIFT WARS</h1>
+            <button onclick="startGame()">START GAME</button>
+            <button onclick="openSettings('mainMenu')">SETTINGS</button>
+        </div>
+        <!-- Settings Menu -->
+        <div id="settingsMenu" class="menu hidden">
+            <h2>SETTINGS</h2>
+            <label>
+                MUSIC
+                <input type="range" id="musicVolume" min="0" max="100" value="50" />
+            </label>
+            <label>
+                SOUND EFFECTS
+                <input type="range" id="soundVolume" min="0" max="100" value="50" />
+            </label>
+            <button onclick="closeSettings()">BACK</button>
+        </div>
+        <!-- Pause Menu -->
+        <div id="pauseMenu" class="menu hidden">
+            <h2>PAUSED</h2>
+            <button onclick="resumeGame()">RESUME</button>
+            <button onclick="openSettings('pauseMenu')">SETTINGS</button>
+            <button onclick="returnToMainMenu()">MAIN MENU</button>
+        </div>
+        <!-- Game Over Menu -->
+        <div id="gameOverMenu" class="menu hidden">
+            <h2>GAME OVER</h2>
+            <p id="winnerText">PLAYER WINS!</p>
+            <button onclick="startGame()">RESTART</button>
+            <button onclick="returnToMainMenu()">MAIN MENU</button>
+        </div>
+        <!-- Game -->
+        <div id="gameContainer" class="hidden">
+            <!-- p5 creates the game canvas here. -->
+            <div id="topBar">
+                <p>WAVE: <span id="waveNumber">0</span></p>
+                <p>ENEMIES LEFT: <span id="enemiesLeft">0</span></p>
+                <p>ECONOMY: <span id="eco">1</span></p>
+            </div>
+            <div id="leftBar">
+                <button id="basicTowerButton" class="towerButton" onclick="towerType = 'basic'">BASIC TOWER</button>
+                <button id="tankTowerButton" class="towerButton" onclick="towerType = 'tank'">TANK TOWER</button>
+            </div>
+            <div id="bottomBar">
+                <div id="player1UI" class="playerUI">
+                    <h3>PLAYER 1</h3>
+                    <p>Health: <span id="player1Health">100</span></p>
+                    <p>Money: <span id="player1Money">0</span></p>
+                </div>
+                <div id="player2UI" class="playerUI">
+                    <h3>OPPONENT</h3>
+                    <p>Health: <span id="player2Health">100</span></p>
+                </div>
+            </div>
+            <div id="gameUI">
+            </div>
+        </div>
+    </body>
+</html>
