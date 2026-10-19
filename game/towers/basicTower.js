@@ -19,7 +19,6 @@ class BasicTower {
         this.range = 100;
         //colour
         this.color = color(0, 0, 255);
-
     }
 
     draw() {
@@ -68,15 +67,15 @@ class BasicTower {
         noStroke();
 
         triangle(
-            Math.min(cellWidth, cellHeight)/2,
+            Math.min(cellWidth, cellHeight) / 2,
             0,
             -Math.min(cellWidth, cellHeight),
-            -cellHeight/2,
+            -cellHeight / 2,
             -Math.min(cellWidth, cellHeight),
-            cellHeight/2
+            cellHeight / 2,
         );
         fill(255, 255, 0);
-        circle(Math.min(cellWidth-5, cellHeight-5), 0, 5);
+        circle(Math.min(cellWidth - 5, cellHeight - 5), 0, 5);
 
         pop();
 

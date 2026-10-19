@@ -1,4 +1,4 @@
-root{
+root {
     --side-bar-width: 0px;
     --bottom-bar-height: 0px;
     --top-bar-height: 0px;
@@ -30,12 +30,12 @@ body {
     z-index: 10;
 }
 
-.menu h1{
+.menu h1 {
     font-size: 50px;
     margin-bottom: 40px;
 }
 
-.menu h2{
+.menu h2 {
     font-size: 35px;
 }
 
@@ -45,7 +45,7 @@ button {
     margin: 15px auto;
     padding: 15px;
     font-size: 18px;
-    background-color: rgb(79,78,101);
+    background-color: rgb(79, 78, 101);
     color: white;
     border: none;
     border-radius: 8px;
@@ -53,11 +53,11 @@ button {
 }
 
 button:hover {
-    background-color: rgb(99,98,121);
+    background-color: rgb(99, 98, 121);
 }
 
 button:active {
-    background-color: rgb(59,58,81);
+    background-color: rgb(59, 58, 81);
 }
 
 .towerButton {
@@ -66,7 +66,7 @@ button:active {
     margin: 15px auto;
     padding: 15px;
     font-size: 18px;
-    background-color: rgb(79,78,101);
+    background-color: rgb(79, 78, 101);
     color: white;
     border: none;
     border-radius: 8px;
@@ -74,8 +74,8 @@ button:active {
 }
 
 .towerButton:focus {
-  background-color: green;
-  transform: translateY(2px);
+    background-color: green;
+    transform: translateY(2px);
 }
 
 label {

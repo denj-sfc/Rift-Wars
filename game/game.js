@@ -31,8 +31,8 @@ class Game {
         this.path = [
             { x: 6, y: laneHeight / 4 },
             { x: laneWidth / 2, y: laneHeight / 4 },
-            { x: laneWidth / 2, y: laneHeight * 3 / 4 },
-            { x: laneWidth-6, y: laneHeight * 3 / 4 }
+            { x: laneWidth / 2, y: (laneHeight * 3) / 4 },
+            { x: laneWidth - 6, y: (laneHeight * 3) / 4 },
         ];
         this.createGrid();
     }
@@ -62,7 +62,7 @@ class Game {
             for (let x = 0; x < this.gridWidth; x++) {
                 this.grid.push({
                     x: (x + 0.5) * this.cellWidth,
-                    y: (y + 0.5) * this.cellHeight
+                    y: (y + 0.5) * this.cellHeight,
                 });
             }
         }
@@ -79,12 +79,15 @@ class Game {
 
     waveSystem() {
         if (!this.gameRunning) return;
-        this.waveTimer = setTimeout(() => {
-            if (this.gameRunning) {
-                this.spawnEnemy();
-                this.waveSystem();
-            }
-        }, 1000 + Math.floor(Math.random() * 4000));
+        this.waveTimer = setTimeout(
+            () => {
+                if (this.gameRunning) {
+                    this.spawnEnemy();
+                    this.waveSystem();
+                }
+            },
+            1000 + Math.floor(Math.random() * 4000),
+        );
     }
 
     startGameTimers() {
@@ -126,6 +129,7 @@ class Game {
         this.moneyTimer = setTimeout(() => {
             if (this.gameRunning) {
                 this.playerMoney += this.amount;
+                this.updateMoney();
             }
         }, 6000);
     }
@@ -135,11 +139,11 @@ let games = [];
 let sidebarWidth = window.innerWidth * 0.15;
 let bottomBarHeight = window.innerHeight * 0.1;
 let topBarHeight = window.innerHeight * 0.1;
-let topBarWidth = (window.innerWidth * 0.7)/8;
-document.documentElement.style.setProperty('--sidebar-width', `${sidebarWidth}px`);
-document.documentElement.style.setProperty('--bottom-bar-height', `${bottomBarHeight}px`);
-document.documentElement.style.setProperty('--top-bar-height', `${topBarHeight}px`);
-document.documentElement.style.setProperty('--top-bar-width', `${topBarWidth}px`);
+let topBarWidth = (window.innerWidth * 0.7) / 8;
+document.documentElement.style.setProperty("--sidebar-width", `${sidebarWidth}px`);
+document.documentElement.style.setProperty("--bottom-bar-height", `${bottomBarHeight}px`);
+document.documentElement.style.setProperty("--top-bar-height", `${topBarHeight}px`);
+document.documentElement.style.setProperty("--top-bar-width", `${topBarWidth}px`);
 
 function resetGames() {
     stopGameTimers();
@@ -152,8 +156,8 @@ function resetGames() {
 
 function setup() {
     const canvas = createCanvas(windowWidth, windowHeight);
-    canvas.parent('gameContainer');
-    canvas.id('gameCanvas');
+    canvas.parent("gameContainer");
+    canvas.id("gameCanvas");
     resizeCanvas(windowWidth, windowHeight, true);
     angleMode(RADIANS);
     resetGames();
@@ -170,22 +174,21 @@ function draw() {
     }
     stroke(200);
     strokeWeight(2);
-    line(sidebarWidth + games[0].laneWidth, 0,
-         sidebarWidth + games[0].laneWidth, height - bottomBarHeight);
-    document.getElementById('player1Money').textContent = player1Game.playerMoney;
-    document.getElementById('player1Health').textContent = player1Game.playerLives;
-    document.getElementById('player2Health').textContent = player2Game.playerLives;
-    document.getElementById('eco').textContent = player1Game.amount;
-    if (gameRunning && games.some(game => game.playerLives <= 0)) {
-        gameOver(player1Game.playerLives <= 0 ? 'OPPONENT' : 'PLAYER');
+    line(sidebarWidth + games[0].laneWidth, 0, sidebarWidth + games[0].laneWidth, height - bottomBarHeight);
+    document.getElementById("player1Money").textContent = player1Game.playerMoney;
+    document.getElementById("player1Health").textContent = player1Game.playerLives;
+    document.getElementById("player2Health").textContent = player2Game.playerLives;
+    document.getElementById("player2Money").textContent = player2Game.playerMoney;
+    document.getElementById("eco").textContent = player1Game.amount;
+    if (gameRunning && games.some((game) => game.playerLives <= 0)) {
+        gameOver(player1Game.playerLives <= 0 ? "OPPONENT" : "PLAYER");
     }
 }
 
 function mousePressed(event) {
-    if (!gameRunning || event?.target.id !== 'gameCanvas') return;
+    if (!gameRunning || event?.target.id !== "gameCanvas") return;
     const x = mouseX - sidebarWidth;
-    if (x >= 0 && x < player1Game.laneWidth &&
-        mouseY >= 0 && mouseY < player1Game.laneHeight) {
+    if (x >= 0 && x < player1Game.laneWidth && mouseY >= 0 && mouseY < player1Game.laneHeight) {
         selectTower(towerType);
     }
     towerType = null;
@@ -194,7 +197,7 @@ function mousePressed(event) {
 function keyPressed() {
     if (keyCode === ESCAPE) {
         if (gameRunning) pauseGame();
-        else if (!document.getElementById('pauseMenu').classList.contains('hidden')) resumeGame();
+        else if (!document.getElementById("pauseMenu").classList.contains("hidden")) resumeGame();
         return false;
     }
 }
@@ -202,8 +205,7 @@ function keyPressed() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight, true);
     for (const game of games) {
-        game.resize(Math.max(1, (width - sidebarWidth) / 2),
-                    Math.max(1, height - bottomBarHeight));
+        game.resize(Math.max(1, (width - sidebarWidth) / 2), Math.max(1, height - bottomBarHeight));
     }
     redraw();
 }
@@ -212,18 +214,17 @@ function selectTower(towerType) {
     if (!gameRunning) return;
     let towerClass;
     switch (towerType) {
-        case 'basic':
+        case "basic":
             towerClass = BasicTower;
             break;
-        case 'tank':
+        case "tank":
             towerClass = TankTower;
             break;
         default:
             return;
     }
     const x = mouseX - sidebarWidth;
-    if (x >= 0 && x < player1Game.laneWidth &&
-        mouseY >= 0 && mouseY < player1Game.laneHeight) {
+    if (x >= 0 && x < player1Game.laneWidth && mouseY >= 0 && mouseY < player1Game.laneHeight) {
         player1Game.spawnTower(x, mouseY, towerClass);
     }
 }

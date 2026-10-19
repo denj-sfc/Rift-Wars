@@ -2,7 +2,7 @@ const oppPos = [
     { column: 16, row: 8 },
     { column: 16, row: 7 },
     { column: 24, row: 28 },
-    { column: 25, row: 28 }
+    { column: 25, row: 28 },
 ];
 
 function smartSpawn(game) {
