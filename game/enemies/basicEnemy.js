@@ -7,9 +7,7 @@ class Enemy {
         this.maxHealth = 100;
         this.speed = windowWidth / 800;
         this.pathIndex = 1;
-        this.value = 100;
         this.damage = 10;
-        // size relative to a grid cell
         this.size = 1;
         this.color = color(255, 80, 80);
     }

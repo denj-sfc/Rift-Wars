@@ -50,7 +50,6 @@ class BasicTower {
 
             if (target.health <= 0) {
                 target.onDefeat();
-                this.game.playerMoney += target.value;
                 this.game.removeEnemy(target);
             }
         }
