@@ -11,13 +11,4 @@ class FastPlusEnemy extends FastEnemy {
             enemy.speed *= this.speedBoost;
         }
     }
-
-    draw() {
-        super.draw();
-        stroke(this.outline);
-        strokeWeight(2);
-        noFill();
-        circle(this.x, this.y, this.diameter());
-        noStroke();
-    }
 }

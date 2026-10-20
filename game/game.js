@@ -7,7 +7,6 @@ class Game {
         this.enemies = [];
         this.towers = [];
         this.grid = [];
-        this.waveTimer = null;
         this.smartSpawnTimer = null;
         this.moneyTimer = null;
         this.gameRunning = false;
@@ -73,28 +72,13 @@ class Game {
         if (index !== -1) this.enemies.splice(index, 1);
     }
 
-    spawnEnemy(enemyClass = Enemy) {
+    spawnEnemy(enemyClass) {
         this.enemies.push(new enemyClass(this.path[0].x, this.path[0].y, this));
-    }
-
-    waveSystem() {
-        if (!this.gameRunning) return;
-        this.waveTimer = setTimeout(
-            () => {
-                if (this.gameRunning) {
-                    const enemyTypes = [Enemy, TankEnemy, FastEnemy, TankPlusEnemy, FastPlusEnemy];
-                    this.spawnEnemy(enemyTypes[Math.floor(Math.random() * enemyTypes.length)]);
-                    this.waveSystem();
-                }
-            },
-            1000 + Math.floor(Math.random() * 4000),
-        );
     }
 
     startGameTimers() {
         this.stopGameTimers();
         this.gameRunning = true;
-        this.waveSystem();
         this.updateMoney();
         if (this.isOpponent) {
             this.smartSpawnTimer = setInterval(() => {
@@ -109,10 +93,8 @@ class Game {
 
     stopGameTimers() {
         this.gameRunning = false;
-        if (this.waveTimer !== null) clearTimeout(this.waveTimer);
         if (this.smartSpawnTimer !== null) clearInterval(this.smartSpawnTimer);
         if (this.moneyTimer !== null) clearInterval(this.moneyTimer);
-        this.waveTimer = null;
         this.smartSpawnTimer = null;
         this.moneyTimer = null;
     }
@@ -153,6 +135,7 @@ function resetGames() {
     player1Game = new Game(laneWidth, laneHeight);
     player2Game = new Game(laneWidth, laneHeight, true);
     games = [player1Game, player2Game];
+    waveManager = new WaveManager(games);
 }
 
 function setup() {
@@ -167,6 +150,7 @@ function setup() {
 
 function draw() {
     background(30);
+    if (gameRunning) waveManager.update(Math.min(deltaTime, 100));
     for (let i = 0; i < games.length; i++) {
         push();
         translate(sidebarWidth + i * games[i].laneWidth, 0);
@@ -181,6 +165,9 @@ function draw() {
     document.getElementById("player2Health").textContent = player2Game.playerLives;
     document.getElementById("player2Money").textContent = player2Game.playerMoney;
     document.getElementById("eco").textContent = player1Game.amount;
+    document.getElementById("waveNumber").textContent = waveManager.wave;
+    document.getElementById("enemiesLeft").textContent = waveManager.queue.length + player1Game.enemies.length;
+    document.getElementById("waveCountdown").textContent = waveManager.queue.length ? "-" : Math.ceil(waveManager.countdown / 1000) + "s";
     if (gameRunning && games.some((game) => game.playerLives <= 0)) {
         gameOver(player1Game.playerLives <= 0 ? "OPPONENT" : "PLAYER");
     }

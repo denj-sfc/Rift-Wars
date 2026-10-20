@@ -12,13 +12,4 @@ class TankPlusEnemy extends TankEnemy {
             enemy.maxHealth += this.healthBoost;
         }
     }
-
-    draw() {
-        super.draw();
-        stroke(this.outline);
-        strokeWeight(2);
-        noFill();
-        circle(this.x, this.y, this.diameter());
-        noStroke();
-    }
 }

@@ -1,5 +1,6 @@
 let player1Game;
 let player2Game;
+let waveManager;
 
 function startGameTimers() {
     for (const game of games) game.startGameTimers();

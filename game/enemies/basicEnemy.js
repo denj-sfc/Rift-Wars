@@ -10,24 +10,21 @@ class Enemy {
         this.damage = 10;
         this.size = 1;
         this.color = color(255, 80, 80);
+        this.outline = null;
     }
 
     update() {
-        // stop when the enemy reaches the end
         if (this.pathIndex >= this.game.path.length) {
             this.game.playerLives -= this.damage; // damage player
-            this.game.removeEnemy(this); // remove the enemy from the game when it reaches the end
+            this.game.removeEnemy(this);
             return;
         }
 
-        // get the current target point
         let target = this.game.path[this.pathIndex];
-        // work out direction and distance to target
         let dx = target.x - this.x;
         let dy = target.y - this.y;
         let distance = sqrt(dx * dx + dy * dy);
 
-        // snap to point if close enough else move toward it
         if (distance < this.speed) {
             this.x = target.x;
             this.y = target.y;
@@ -38,29 +35,27 @@ class Enemy {
         }
     }
 
-    // called by a tower when this enemy is killed, before it is removed
     onDefeat() {}
 
-    // other enemies within a radius measured in grid cells
     enemiesInRange(cells) {
         const radius = cells * Math.min(this.game.cellWidth, this.game.cellHeight);
         return this.game.enemies.filter((enemy) => enemy !== this && dist(this.x, this.y, enemy.x, enemy.y) <= radius);
     }
 
-    diameter() {
-        return Math.min(this.game.cellWidth - 5, this.game.cellHeight - 5) * this.size;
-    }
-
     draw() {
         fill(this.color);
-        noStroke();
-        circle(this.x, this.y, this.diameter());
+        if (this.outline) {
+            stroke(this.outline);
+            strokeWeight(2);
+        } else {
+            noStroke();
+        }
+        circle(this.x, this.y, Math.min(this.game.cellWidth - 5, this.game.cellHeight - 5) * this.size);
 
-        // draw health above enemy, scaled to max health so every type has the same bar width
         let healthBarWidth = (this.health / this.maxHealth) * (100 / 3);
         let healthBarHeight = 5;
 
-        fill(0, 255, 0); // green
+        fill(0, 255, 0);
         noStroke();
         rect(this.x - healthBarWidth / 2, this.y - 25, healthBarWidth, healthBarHeight);
     }
