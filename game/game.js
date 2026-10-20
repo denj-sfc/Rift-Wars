@@ -73,22 +73,23 @@ class Game {
         if (index !== -1) this.enemies.splice(index, 1);
     }
 
-    spawnEnemy() {
-        this.enemies.push(new Enemy(this.path[0].x, this.path[0].y, this));
+    spawnEnemy(enemyClass = Enemy) {
+        this.enemies.push(new enemyClass(this.path[0].x, this.path[0].y, this));
     }
 
-    waveSystem() {
-        if (!this.gameRunning) return;
-        this.waveTimer = setTimeout(
-            () => {
-                if (this.gameRunning) {
-                    this.spawnEnemy();
-                    this.waveSystem();
-                }
-            },
-            1000 + Math.floor(Math.random() * 4000),
-        );
-    }
+    // waveSystem() {
+    //     if (!this.gameRunning) return;
+    //     this.waveTimer = setTimeout(
+    //         () => {
+    //             if (this.gameRunning) {
+    //                 const enemyTypes = [Enemy, TankEnemy, FastEnemy, TankPlusEnemy, FastPlusEnemy];
+    //                 this.spawnEnemy(enemyTypes[Math.floor(Math.random() * enemyTypes.length)]);
+    //                 this.waveSystem();
+    //             }
+    //         },
+    //         1000 + Math.floor(Math.random() * 4000),
+    //     );
+    // }
 
     startGameTimers() {
         this.stopGameTimers();
