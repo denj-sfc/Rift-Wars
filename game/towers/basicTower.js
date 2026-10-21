@@ -27,12 +27,12 @@ class BasicTower {
         let target = null;
 
         let closestDistance = this.range;
-        let enemies = this.game.enemies;
-        let { cellWidth, cellHeight } = this.game;
+        const enemies = this.game.enemies;
+        const { cellWidth, cellHeight } = this.game;
 
         // find nearest enemy
         for (let i = 0; i < enemies.length; i++) {
-            let enemyDistance = dist(this.x, this.y, enemies[i].x, enemies[i].y);
+            const enemyDistance = dist(this.x, this.y, enemies[i].x, enemies[i].y);
 
             if (enemyDistance < closestDistance) {
                 closestDistance = enemyDistance;

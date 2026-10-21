@@ -9,9 +9,10 @@ const enemyProgression = [
 function waveAlgorithm(wave) {
     const enemies = [];
     for (const enemy of enemyProgression) {
-        if (wave < enemy.unlock) continue;
-        const count = Math.floor(enemy.count + (wave - enemy.unlock) * enemy.growth);
-        for (let i = 0; i < count; i++) enemies.push(enemy.type);
+        if (wave >= enemy.unlock) {
+            const count = Math.floor(enemy.count + (wave - enemy.unlock) * enemy.growth);
+            for (let i = 0; i < count; i++) enemies.push(enemy.type);
+        }
     }
 
     for (let i = enemies.length - 1; i > 0; i--) {

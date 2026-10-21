@@ -1,6 +1,6 @@
 class Game {
     constructor(laneWidth, laneHeight, isOpponent = false) {
-        this.playerMoney = 650;
+        this.playerMoney = 300;
         this.playerLives = 100;
         this.gridHeight = 40;
         this.gridWidth = 40;
@@ -100,7 +100,7 @@ class Game {
     }
 
     spawnTower(x, y, towerClass = BasicTower) {
-        let tower = new towerClass(x, y, this);
+        const tower = new towerClass(x, y, this);
         if (this.playerMoney < tower.cost) return false;
         this.towers.push(tower);
         this.playerMoney -= tower.cost;
@@ -119,10 +119,10 @@ class Game {
 }
 
 let games = [];
-let sidebarWidth = window.innerWidth * 0.15;
-let bottomBarHeight = window.innerHeight * 0.1;
-let topBarHeight = window.innerHeight * 0.1;
-let topBarWidth = (window.innerWidth * 0.7) / 8;
+const sidebarWidth = window.innerWidth * 0.15;
+const bottomBarHeight = window.innerHeight * 0.1;
+const topBarHeight = window.innerHeight * 0.1;
+const topBarWidth = (window.innerWidth * 0.7) / 8;
 document.documentElement.style.setProperty("--sidebar-width", `${sidebarWidth}px`);
 document.documentElement.style.setProperty("--bottom-bar-height", `${bottomBarHeight}px`);
 document.documentElement.style.setProperty("--top-bar-height", `${topBarHeight}px`);
@@ -167,7 +167,9 @@ function draw() {
     document.getElementById("eco").textContent = player1Game.amount;
     document.getElementById("waveNumber").textContent = waveManager.wave;
     document.getElementById("enemiesLeft").textContent = waveManager.queue.length + player1Game.enemies.length;
-    document.getElementById("waveCountdown").textContent = waveManager.queue.length ? "-" : Math.ceil(waveManager.countdown / 1000) + "s";
+    document.getElementById("waveCountdown").textContent = waveManager.queue.length
+        ? "-"
+        : Math.ceil(waveManager.countdown / 1000) + "s";
     if (gameRunning && games.some((game) => game.playerLives <= 0)) {
         gameOver(player1Game.playerLives <= 0 ? "OPPONENT" : "PLAYER");
     }

@@ -20,10 +20,10 @@ class Enemy {
             return;
         }
 
-        let target = this.game.path[this.pathIndex];
-        let dx = target.x - this.x;
-        let dy = target.y - this.y;
-        let distance = sqrt(dx * dx + dy * dy);
+        const target = this.game.path[this.pathIndex];
+        const dx = target.x - this.x;
+        const dy = target.y - this.y;
+        const distance = sqrt(dx * dx + dy * dy);
 
         if (distance < this.speed) {
             this.x = target.x;
@@ -52,8 +52,8 @@ class Enemy {
         }
         circle(this.x, this.y, Math.min(this.game.cellWidth - 5, this.game.cellHeight - 5) * this.size);
 
-        let healthBarWidth = (this.health / this.maxHealth) * (100 / 3);
-        let healthBarHeight = 5;
+        const healthBarWidth = (this.health / this.maxHealth) * (100 / 3);
+        const healthBarHeight = 5;
 
         fill(0, 255, 0);
         noStroke();
