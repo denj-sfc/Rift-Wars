@@ -167,16 +167,18 @@ function draw() {
     document.getElementById("eco").textContent = player1Game.amount;
     document.getElementById("waveNumber").textContent = waveManager.wave;
     document.getElementById("enemiesLeft").textContent = waveManager.queue.length + player1Game.enemies.length;
-    document.getElementById("waveCountdown").textContent = waveManager.queue.length
-        ? "-"
-        : Math.ceil(waveManager.countdown / 1000) + "s";
+    if (waveManager.queue.length) {
+        document.getElementById("waveCountdown").textContent = "-";
+    } else {
+        document.getElementById("waveCountdown").textContent = Math.ceil(waveManager.countdown / 1000) + "s";
+    }
     if (gameRunning && games.some((game) => game.playerLives <= 0)) {
         gameOver(player1Game.playerLives <= 0 ? "OPPONENT" : "PLAYER");
     }
 }
 
 function mousePressed(event) {
-    if (!gameRunning || event?.target.id !== "gameCanvas") return;
+    if (!gameRunning || !event || event.target.id !== "gameCanvas") return;
     const x = mouseX - sidebarWidth;
     if (x >= 0 && x < player1Game.laneWidth && mouseY >= 0 && mouseY < player1Game.laneHeight) {
         selectTower(towerType);
