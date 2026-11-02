@@ -28,7 +28,7 @@ class BasicTower {
 
         let closestDistance = this.range;
         const enemies = this.game.enemies;
-        const { cellWidth, cellHeight } = this.game;
+        const { unitWidth, unitHeight } = this.game;
 
         // find nearest enemy
         for (let i = 0; i < enemies.length; i++) {
@@ -67,15 +67,15 @@ class BasicTower {
         noStroke();
 
         triangle(
-            Math.min(cellWidth, cellHeight) / 2,
+            Math.min(unitWidth, unitHeight) / 2,
             0,
-            -Math.min(cellWidth, cellHeight),
-            -cellHeight / 2,
-            -Math.min(cellWidth, cellHeight),
-            cellHeight / 2,
+            -Math.min(unitWidth, unitHeight),
+            -unitHeight / 2,
+            -Math.min(unitWidth, unitHeight),
+            unitHeight / 2,
         );
         fill(255, 255, 0);
-        circle(Math.min(cellWidth - 5, cellHeight - 5), 0, 5);
+        circle(Math.min(unitWidth - 5, unitHeight - 5), 0, 5);
 
         pop();
 

@@ -38,7 +38,7 @@ class Enemy {
     onDefeat() {}
 
     enemiesInRange(cells) {
-        const radius = cells * Math.min(this.game.cellWidth, this.game.cellHeight);
+        const radius = cells * Math.min(this.game.unitWidth, this.game.unitHeight);
         return this.game.enemies.filter((enemy) => enemy !== this && dist(this.x, this.y, enemy.x, enemy.y) <= radius);
     }
 
@@ -50,7 +50,7 @@ class Enemy {
         } else {
             noStroke();
         }
-        circle(this.x, this.y, Math.min(this.game.cellWidth - 5, this.game.cellHeight - 5) * this.size);
+        circle(this.x, this.y, Math.min(this.game.unitWidth - 5, this.game.unitHeight - 5) * this.size);
 
         const healthBarWidth = (this.health / this.maxHealth) * (100 / 3);
         const healthBarHeight = 5;

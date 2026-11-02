@@ -2,16 +2,16 @@ class Game {
     constructor(laneWidth, laneHeight, isOpponent = false) {
         this.playerMoney = 300;
         this.playerLives = 100;
-        this.gridHeight = 40;
-        this.gridWidth = 40;
+        this.gridHeight = 200;
+        this.gridWidth = 200;
+        this.unitsAcross = 40; // towers, enemies and the path are sized from this
         this.enemies = [];
         this.towers = [];
         this.grid = [];
-        this.smartSpawnTimer = null;
+        this.opponentTimer = null;
         this.moneyTimer = null;
         this.gameRunning = false;
         this.isOpponent = isOpponent;
-        this.oppPosIndex = 0;
         this.resize(laneWidth, laneHeight);
         this.amount = 250;
     }
@@ -27,6 +27,8 @@ class Game {
         this.laneHeight = laneHeight;
         this.cellWidth = laneWidth / this.gridWidth;
         this.cellHeight = laneHeight / this.gridHeight;
+        this.unitWidth = laneWidth / this.unitsAcross;
+        this.unitHeight = laneHeight / this.unitsAcross;
         this.path = [
             { x: 6, y: laneHeight / 4 },
             { x: laneWidth / 2, y: laneHeight / 4 },
@@ -49,7 +51,7 @@ class Game {
 
     drawPath() {
         stroke(120);
-        strokeWeight(Math.max(8, Math.min(this.cellHeight, this.cellWidth)));
+        strokeWeight(Math.max(8, Math.min(this.unitHeight, this.unitWidth)));
         for (let i = 0; i < this.path.length - 1; i++) {
             line(this.path[i].x, this.path[i].y, this.path[i + 1].x, this.path[i + 1].y);
         }
@@ -81,21 +83,17 @@ class Game {
         this.gameRunning = true;
         this.updateMoney();
         if (this.isOpponent) {
-            this.smartSpawnTimer = setInterval(() => {
-                if (this.gameRunning && this.enemies.length > 0) smartSpawn(this);
-                if (this.oppPosIndex >= oppPos.length) {
-                    clearInterval(this.smartSpawnTimer);
-                    this.smartSpawnTimer = null;
-                }
-            }, 2000);
+            this.opponentTimer = setInterval(() => {
+                if (this.gameRunning) reactiveOpponent(this);
+            }, 500);
         }
     }
 
     stopGameTimers() {
         this.gameRunning = false;
-        if (this.smartSpawnTimer !== null) clearInterval(this.smartSpawnTimer);
+        if (this.opponentTimer !== null) clearInterval(this.opponentTimer);
         if (this.moneyTimer !== null) clearInterval(this.moneyTimer);
-        this.smartSpawnTimer = null;
+        this.opponentTimer = null;
         this.moneyTimer = null;
     }
 
