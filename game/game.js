@@ -100,6 +100,7 @@ class Game {
     spawnTower(x, y, towerClass = BasicTower) {
         const tower = new towerClass(x, y, this);
         if (this.playerMoney < tower.cost) return false;
+
         this.towers.push(tower);
         this.playerMoney -= tower.cost;
         return true;

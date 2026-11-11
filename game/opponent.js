@@ -53,7 +53,6 @@ function reactiveOpponent(game) {
     }
     if (budget < tower.cost) return;
 
-    // only count the path still ahead of the oldest enemy
     let route = game.path;
     if (game.enemies.length > 0) {
         const oldest = game.enemies[0];
