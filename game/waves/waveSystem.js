@@ -21,3 +21,11 @@ function waveAlgorithm(wave) {
     }
     return enemies;
 }
+
+// enemies a player can pay to send into the other lane (S6)
+// income is added to the sender's economy each time
+const sendableEnemies = [
+    { name: "basic", type: Enemy, cost: 50, income: 10 },
+    { name: "fast", type: FastEnemy, cost: 75, income: 15 },
+    { name: "tank", type: TankEnemy, cost: 200, income: 40 },
+];

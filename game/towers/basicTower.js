@@ -1,3 +1,6 @@
+// targeting priorities a tower can cycle through (S7)
+const targetingModes = ["first", "last", "strong", "weak"];
+
 class BasicTower {
     constructor(x, y, game) {
         this.game = game;
@@ -6,8 +9,8 @@ class BasicTower {
         this.y = y;
         // tower damage
         this.damage = 20;
-        // tower targetting state
-        this.targetting = 0;
+        // index into targetingModes, defaults to the enemy furthest along the path
+        this.targeting = targetingModes.indexOf("first");
         // time of the last attack
         this.lastAttackTime = millis();
         // cost to place
@@ -19,43 +22,89 @@ class BasicTower {
         this.range = 100;
         //colour
         this.color = color(0, 0, 255);
+        // upgrades
+        this.level = 1;
+        this.maxLevel = 3;
+        // where the last shot landed, used to draw the shot
+        this.shotX = null;
+        this.shotY = null;
+        this.shotLength = 100; // milliseconds the shot stays visible
+    }
+
+    // picks an enemy in range using the tower's targeting priority
+    findTarget() {
+        let target = null;
+        let bestScore = 0;
+        const enemies = this.game.enemies;
+
+        for (let i = 0; i < enemies.length; i++) {
+            const enemyDistance = dist(this.x, this.y, enemies[i].x, enemies[i].y);
+            if (enemyDistance >= this.range) continue;
+
+            let score;
+            switch (targetingModes[this.targeting]) {
+                case "first": // furthest along the path
+                    score = enemies[i].distanceToEnd();
+                    break;
+                case "last": // closest to the tower
+                    score = enemyDistance;
+                    break;
+                case "strong": // most health
+                    score = -enemies[i].health;
+                    break;
+                case "weak": // least health
+                    score = enemies[i].health;
+                    break;
+            }
+
+            if (target === null || score < bestScore) {
+                bestScore = score;
+                target = enemies[i];
+            }
+        }
+        return target;
+    }
+
+    hit(enemy, damage) {
+        enemy.health -= damage;
+        enemy.hitTime = millis();
+        if (enemy.health <= 0) this.game.defeatEnemy(enemy);
+    }
+
+    attack(target) {
+        this.hit(target, this.damage);
+    }
+
+    getUpgradeCost() {
+        return Math.floor(this.cost * 0.6 * this.level);
+    }
+
+    upgrade() {
+        this.level++;
+        this.damage = Math.floor(this.damage * 1.5);
+        this.range = Math.floor(this.range * 1.15);
+        this.fireRate = Math.floor(this.fireRate * 0.85);
     }
 
     draw() {
-        let targetX = null;
-        let targetY = null;
-        let target = null;
-
-        let closestDistance = this.range;
-        const enemies = this.game.enemies;
+        const target = this.findTarget();
         const { unitWidth, unitHeight } = this.game;
-
-        // find nearest enemy
-        for (let i = 0; i < enemies.length; i++) {
-            const enemyDistance = dist(this.x, this.y, enemies[i].x, enemies[i].y);
-
-            if (enemyDistance < closestDistance) {
-                closestDistance = enemyDistance;
-                this.targetting = 1;
-                target = enemies[i];
-                targetX = enemies[i].x;
-                targetY = enemies[i].y;
-            }
-        }
 
         // damage enemy every x seconds when targetted
         if (this.game.gameRunning && target && millis() - this.lastAttackTime >= this.fireRate) {
-            target.health -= this.damage;
+            this.shotX = target.x;
+            this.shotY = target.y;
+            this.attack(target);
             this.lastAttackTime = millis();
-
-            if (target.health <= 0) {
-                target.onDefeat();
-                this.game.removeEnemy(target);
-            }
         }
 
-        if (targetX !== null && targetY !== null) {
-            this.angle = atan2(targetY - this.y, targetX - this.x);
+        if (target) {
+            this.angle = atan2(target.y - this.y, target.x - this.x);
+        }
+
+        // draw shot while it is fresh
+        if (this.shotX !== null && millis() - this.lastAttackTime < this.shotLength) {
+            this.drawShot();
         }
 
         // draw tower
@@ -79,10 +128,28 @@ class BasicTower {
 
         pop();
 
-        // draw tower range
-        stroke(255, 0, 0);
+        // draw one dot per level under the tower
+        fill(255);
+        noStroke();
+        for (let i = 0; i < this.level; i++) {
+            circle(this.x + (i - (this.level - 1) / 2) * 8, this.y + unitHeight, 5);
+        }
+
+        // draw tower range, brighter when selected
+        if (this === selectedTower) {
+            stroke(255);
+            strokeWeight(3);
+        } else {
+            stroke(255, 0, 0);
+            strokeWeight(2);
+        }
         noFill();
-        strokeWeight(2);
-        circle(this.x, this.y, this.range * 2, 500, 500);
+        circle(this.x, this.y, this.range * 2);
+    }
+
+    drawShot() {
+        stroke(255, 255, 0);
+        strokeWeight(3);
+        line(this.x, this.y, this.shotX, this.shotY);
     }
 }

@@ -3,6 +3,7 @@ class TankPlusEnemy extends TankEnemy {
         super(x, y, game);
         this.buffRange = 4;
         this.healthBoost = 50;
+        this.reward = 45;
         this.outline = color(255, 255, 255);
     }
 

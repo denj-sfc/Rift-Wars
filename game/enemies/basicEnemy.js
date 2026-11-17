@@ -11,6 +11,8 @@ class Enemy {
         this.size = 1;
         this.color = color(255, 80, 80);
         this.outline = null;
+        this.reward = 10; // money given to the player who defeats it
+        this.hitTime = -1000; // time the enemy was last damaged
     }
 
     update() {
@@ -37,13 +39,26 @@ class Enemy {
 
     onDefeat() {}
 
+    // how far the enemy still has to travel along the path
+    distanceToEnd() {
+        const path = this.game.path;
+        if (this.pathIndex >= path.length) return 0;
+        let distance = dist(this.x, this.y, path[this.pathIndex].x, path[this.pathIndex].y);
+        for (let i = this.pathIndex; i < path.length - 1; i++) {
+            distance += dist(path[i].x, path[i].y, path[i + 1].x, path[i + 1].y);
+        }
+        return distance;
+    }
+
     enemiesInRange(cells) {
         const radius = cells * Math.min(this.game.unitWidth, this.game.unitHeight);
         return this.game.enemies.filter((enemy) => enemy !== this && dist(this.x, this.y, enemy.x, enemy.y) <= radius);
     }
 
     draw() {
-        fill(this.color);
+        // flash white for a moment after being hit
+        if (millis() - this.hitTime < 100) fill(255);
+        else fill(this.color);
         if (this.outline) {
             stroke(this.outline);
             strokeWeight(2);
@@ -52,11 +67,14 @@ class Enemy {
         }
         circle(this.x, this.y, Math.min(this.game.unitWidth - 5, this.game.unitHeight - 5) * this.size);
 
-        const healthBarWidth = (this.health / this.maxHealth) * (100 / 3);
+        const fullBarWidth = 100 / 3;
+        const healthBarWidth = (this.health / this.maxHealth) * fullBarWidth;
         const healthBarHeight = 5;
 
-        fill(0, 255, 0);
         noStroke();
-        rect(this.x - healthBarWidth / 2, this.y - 25, healthBarWidth, healthBarHeight);
+        fill(120, 0, 0);
+        rect(this.x - fullBarWidth / 2, this.y - 25, fullBarWidth, healthBarHeight);
+        fill(0, 255, 0);
+        rect(this.x - fullBarWidth / 2, this.y - 25, healthBarWidth, healthBarHeight);
     }
 }

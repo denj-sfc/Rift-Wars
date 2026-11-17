@@ -17,16 +17,44 @@
         <script src="game/waves/waveManager.js" defer></script>
         <script src="game/towers/basicTower.js" defer></script>
         <script src="game/towers/tankTower.js" defer></script>
+        <script src="game/towers/splashTower.js" defer></script>
         <script src="game/game.js" defer></script>
         <script src="game/scripts.js" defer></script>
         <script src="game/opponent.js" defer></script>
+        <script src="game/profile.js" defer></script>
     </head>
     <body>
         <!-- Main Menu -->
         <div id="mainMenu" class="menu">
             <h1>RIFT WARS</h1>
-            <button onclick="startGame()">START GAME</button>
+            <label>
+                PLAYER NAME
+                <input type="text" id="playerName" maxlength="12" onchange="saveProfileName()" />
+            </label>
+            <button onclick="startGame('survival')">SURVIVAL</button>
+            <button onclick="startGame('competitive')">VS AI</button>
+            <button onclick="showStats()">STATISTICS</button>
             <button onclick="openSettings('mainMenu')">SETTINGS</button>
+        </div>
+        <!-- Statistics Menu -->
+        <div id="statsMenu" class="menu hidden">
+            <h2>STATISTICS</h2>
+            <h3 id="statsName">PLAYER</h3>
+            <p>Games played: <span id="statGames">0</span></p>
+            <p>Wins vs AI: <span id="statWins">0</span></p>
+            <p>Enemies defeated: <span id="statEnemies">0</span></p>
+            <p>Towers placed: <span id="statTowers">0</span></p>
+            <p>Money earned: <span id="statMoney">0</span></p>
+            <p>Highest wave: <span id="statWave">0</span></p>
+            <p>Most enemies in one game: <span id="statMostEnemies">0</span></p>
+            <h3>SURVIVAL HIGH SCORES</h3>
+            <p id="highScore0"></p>
+            <p id="highScore1"></p>
+            <p id="highScore2"></p>
+            <p id="highScore3"></p>
+            <p id="highScore4"></p>
+            <button onclick="resetStats()">RESET STATS</button>
+            <button onclick="showMenu('mainMenu')">BACK</button>
         </div>
         <!-- Settings Menu -->
         <div id="settingsMenu" class="menu hidden">
@@ -45,6 +73,7 @@
         <div id="pauseMenu" class="menu hidden">
             <h2>PAUSED</h2>
             <button onclick="resumeGame()">RESUME</button>
+            <button onclick="startGame()">RESTART</button>
             <button onclick="openSettings('pauseMenu')">SETTINGS</button>
             <button onclick="returnToMainMenu()">MAIN MENU</button>
         </div>
@@ -52,6 +81,14 @@
         <div id="gameOverMenu" class="menu hidden">
             <h2>GAME OVER</h2>
             <p id="winnerText">PLAYER WINS!</p>
+            <div class="gameStats">
+                <p>Wave reached: <span id="gameWave">0</span></p>
+                <p>Enemies defeated: <span id="gameEnemies">0</span></p>
+                <p>Towers placed: <span id="gameTowers">0</span></p>
+                <p>Money earned: <span id="gameMoney">0</span></p>
+                <p>Total games played: <span id="gameTotalGames">0</span></p>
+                <p>Total wins vs AI: <span id="gameTotalWins">0</span></p>
+            </div>
             <button onclick="startGame()">RESTART</button>
             <button onclick="returnToMainMenu()">MAIN MENU</button>
         </div>
@@ -63,14 +100,32 @@
                 <p>ENEMIES LEFT: <span id="enemiesLeft">0</span></p>
                 <p>NEXT WAVE: <span id="waveCountdown">-</span></p>
                 <p>ECONOMY: <span id="eco">1</span></p>
+                <p>MODE: <span id="gameModeText">VS AI</span></p>
             </div>
             <div id="leftBar">
-                <button id="basicTowerButton" class="towerButton" onclick="towerType = 'basic'">BASIC TOWER</button>
-                <button id="tankTowerButton" class="towerButton" onclick="towerType = 'tank'">TANK TOWER</button>
+                <button id="basicTowerButton" class="towerButton" onclick="towerType = 'basic'">BASIC TOWER $150</button>
+                <button id="tankTowerButton" class="towerButton" onclick="towerType = 'tank'">TANK TOWER $300</button>
+                <button id="splashTowerButton" class="towerButton" onclick="towerType = 'splash'">SPLASH TOWER $250</button>
+                <div id="towerPanel" class="sidePanel hidden">
+                    <h3>SELECTED TOWER</h3>
+                    <p>Level: <span id="towerLevel">1</span></p>
+                    <p>Damage: <span id="towerDamage">0</span></p>
+                    <p>Range: <span id="towerRange">0</span></p>
+                    <p>Fire delay: <span id="towerFireRate">0</span>ms</p>
+                    <button class="smallButton" onclick="upgradeSelectedTower()">UPGRADE <span id="upgradeCost">$0</span></button>
+                    <button class="smallButton" onclick="cycleTargeting()">TARGET: <span id="targetingMode">FIRST</span></button>
+                </div>
+                <div id="sendPanel" class="sidePanel">
+                    <h3>SEND ENEMIES</h3>
+                    <button class="smallButton" onclick="sendEnemy('basic')">BASIC $50</button>
+                    <button class="smallButton" onclick="sendEnemy('fast')">FAST $75</button>
+                    <button class="smallButton" onclick="sendEnemy('tank')">TANK $200</button>
+                </div>
+                <button class="smallButton" onclick="pauseGame()">PAUSE (ESC)</button>
             </div>
             <div id="bottomBar">
                 <div id="player1UI" class="playerUI">
-                    <h3>PLAYER 1</h3>
+                    <h3 id="player1Name">PLAYER 1</h3>
                     <p>Health: <span id="player1Health">100</span></p>
                     <p>Money: <span id="player1Money">0</span></p>
                 </div>

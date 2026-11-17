@@ -28,6 +28,8 @@ body {
     border: 3px solid white;
     border-radius: 15px;
     z-index: 10;
+    max-height: 85vh;
+    overflow-y: auto;
 }
 
 .menu h1 {
@@ -76,6 +78,35 @@ button:active {
 .towerButton:focus {
     background-color: green;
     transform: translateY(2px);
+}
+
+.smallButton {
+    width: 90%;
+    margin: 6px auto;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.sidePanel {
+    margin: 10px;
+    padding: 6px;
+    border: 1px solid rgb(99, 98, 121);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.sidePanel h3 {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+.sidePanel p {
+    margin: 3px 0;
+}
+
+.gameStats p {
+    margin: 4px 0;
 }
 
 label {
@@ -130,6 +161,7 @@ canvas {
     width: var(--sidebar-width);
     background: #222;
     z-index: 2;
+    overflow-y: auto;
 }
 
 #bottomBar {

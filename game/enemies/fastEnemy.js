@@ -6,6 +6,7 @@ class FastEnemy extends Enemy {
         this.speed = windowWidth / 350;
         this.damage = 5;
         this.size = 0.7;
+        this.reward = 8;
         this.color = color(255, 200, 60);
     }
 }

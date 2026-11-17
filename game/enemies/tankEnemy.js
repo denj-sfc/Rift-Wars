@@ -6,6 +6,7 @@ class TankEnemy extends Enemy {
         this.speed = windowWidth / 2000;
         this.damage = 25;
         this.size = 1.4;
+        this.reward = 30;
         this.color = color(150, 90, 255);
     }
 }

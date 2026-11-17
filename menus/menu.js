@@ -14,7 +14,14 @@ function showMenu(menuID) {
     document.getElementById(menuID).classList.remove("hidden");
 }
 
-function startGame() {
+function setVisible(id, visible) {
+    if (visible) document.getElementById(id).classList.remove("hidden");
+    else document.getElementById(id).classList.add("hidden");
+}
+
+// mode is "survival" or "competitive"; leave it out to replay the last mode
+function startGame(mode) {
+    if (mode) gameMode = mode;
     hideAllMenus();
     document.getElementById("gameContainer").classList.remove("hidden");
     gameRunning = true;
@@ -48,11 +55,12 @@ function returnToMainMenu() {
     showMenu("mainMenu");
 }
 
-function gameOver(winner) {
+function gameOver(message, won) {
     gameRunning = false;
     stopGameTimers();
     noLoop();
-    document.getElementById("winnerText").textContent = winner + " WINS!";
+    document.getElementById("winnerText").textContent = message;
+    recordGame(won);
     showMenu("gameOverMenu");
 }
 

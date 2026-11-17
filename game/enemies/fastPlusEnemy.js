@@ -3,6 +3,7 @@ class FastPlusEnemy extends FastEnemy {
         super(x, y, game);
         this.buffRange = 4;
         this.speedBoost = 1.25;
+        this.reward = 15;
         this.outline = color(255, 255, 255);
     }
 
