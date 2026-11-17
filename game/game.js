@@ -287,7 +287,7 @@ function updateUI() {
         if (selectedTower.level >= selectedTower.maxLevel) {
             document.getElementById("upgradeCost").textContent = "MAX";
         } else {
-            document.getElementById("upgradeCost").textContent = "$" + selectedTower.getUpgradeCost();
+            document.getElementById("upgradeCost").textContent = selectedTower.getUpgradeCost();
         }
         document.getElementById("targetingMode").textContent = targetingModes[selectedTower.targeting].toUpperCase();
     }

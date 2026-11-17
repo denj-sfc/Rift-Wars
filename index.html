@@ -103,23 +103,23 @@
                 <p>MODE: <span id="gameModeText">VS AI</span></p>
             </div>
             <div id="leftBar">
-                <button id="basicTowerButton" class="towerButton" onclick="towerType = 'basic'">BASIC TOWER $150</button>
-                <button id="tankTowerButton" class="towerButton" onclick="towerType = 'tank'">TANK TOWER $300</button>
-                <button id="splashTowerButton" class="towerButton" onclick="towerType = 'splash'">SPLASH TOWER $250</button>
+                <button id="basicTowerButton" class="towerButton" onclick="towerType = 'basic'">BASIC TOWER (150)</button>
+                <button id="tankTowerButton" class="towerButton" onclick="towerType = 'tank'">TANK TOWER (300)</button>
+                <button id="splashTowerButton" class="towerButton" onclick="towerType = 'splash'">SPLASH TOWER (250)</button>
                 <div id="towerPanel" class="sidePanel hidden">
                     <h3>SELECTED TOWER</h3>
                     <p>Level: <span id="towerLevel">1</span></p>
                     <p>Damage: <span id="towerDamage">0</span></p>
                     <p>Range: <span id="towerRange">0</span></p>
                     <p>Fire delay: <span id="towerFireRate">0</span>ms</p>
-                    <button class="smallButton" onclick="upgradeSelectedTower()">UPGRADE <span id="upgradeCost">$0</span></button>
+                    <button class="smallButton" onclick="upgradeSelectedTower()">UPGRADE (<span id="upgradeCost">0</span>)</button>
                     <button class="smallButton" onclick="cycleTargeting()">TARGET: <span id="targetingMode">FIRST</span></button>
                 </div>
                 <div id="sendPanel" class="sidePanel">
                     <h3>SEND ENEMIES</h3>
-                    <button class="smallButton" onclick="sendEnemy('basic')">BASIC $50</button>
-                    <button class="smallButton" onclick="sendEnemy('fast')">FAST $75</button>
-                    <button class="smallButton" onclick="sendEnemy('tank')">TANK $200</button>
+                    <button class="smallButton" onclick="sendEnemy('basic')">BASIC (50)</button>
+                    <button class="smallButton" onclick="sendEnemy('fast')">FAST (75)</button>
+                    <button class="smallButton" onclick="sendEnemy('tank')">TANK (200)</button>
                 </div>
                 <button class="smallButton" onclick="pauseGame()">PAUSE (ESC)</button>
             </div>
